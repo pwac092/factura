@@ -7,10 +7,12 @@ from num2words import num2words
 class sales():
     def __init__(self):
         #[(concept,five,ten,excempt),...]
-        self.concept = tuple()
-
-    def add_concept(self, new_concept):
-        self.concept = new_concept
+        self.concept = ""
+        new_sale.quantity = 0
+        new_sale.price = 0
+        new_sale.five = 0 
+        new_sale.ten = 0
+        new_sale.excempt = 0
 
 class invoice():
     def __init__ (self):
@@ -47,7 +49,8 @@ def print_header(filename):
             """)
 
 
-def print_invoice(filename, invoice):
+def print_invoice(destination, invoice):
+    filename = destination + invoice.date.replace(' ','_') + ".tex"
     with open(filename, 'a') as f:
         #date
         f.write("\\lbl[l]{36,256;\\textcolor{black}{\\small \\textbf{ "+ invoice.date+"}}}\n")
@@ -77,33 +80,33 @@ def print_invoice(filename, invoice):
         total_excempt = 0
         for sale in invoice.sales:
             #Descripciones
-            f.write("\\lbl[l]{34,232;\\textcolor{black}{\\small{" + sale.concept[0] +"}}}\n")
-            f.write("\\lbl[l]{34,94.3;\\textcolor{black}{\\small{" + sale.concept[0] +"}}}\n")
+            f.write("\\lbl[l]{34,232;\\textcolor{black}{\\small{" + sale.concept +"}}}\n")
+            f.write("\\lbl[l]{34,94.3;\\textcolor{black}{\\small{" + sale.concept +"}}}\n")
 
             #precio unitario
-            f.write("\\lbl[l]{125,232;\\textcolor{black}{\\small{"+str(sale.concept[1]) +"}}}\n")
-            f.write("\\lbl[l]{125,94.3;\\textcolor{black}{\\small{"+str(sale.concept[1])+"}}}\n")
+            f.write("\\lbl[l]{125,232;\\textcolor{black}{\\small{"+str(sale.price) +"}}}\n")
+            f.write("\\lbl[l]{125,94.3;\\textcolor{black}{\\small{"+str(sale.price)+"}}}\n")
 
             if sale.concept[2]:
                 total_five += int(sale.concept[2])
                 if int(sale.concept[2]) > 0:
                     #five percent
-                    f.write("\\lbl[l]{156.2,232;\\textcolor{black}{\\small{" + str(sale.concept[2]) + "}}}\n")
-                    f.write("\\lbl[l]{156.2,94.3;\\textcolor{black}{\\small{" + str(sale.concept[2]) + "}}}\n")
+                    f.write("\\lbl[l]{156.2,232;\\textcolor{black}{\\small{" + str(sale.five) + "}}}\n")
+                    f.write("\\lbl[l]{156.2,94.3;\\textcolor{black}{\\small{" + str(sale.five) + "}}}\n")
 
             if sale.concept[3]:
                 total_ten += int(sale.concept[3])
                 if int(sale.concept[3]) > 0:
                     #ten percent
-                    f.write("\\lbl[l]{170.2,232;\\textcolor{black}{\\small{"+str(sale.concept[3])+"}}}\n")
-                    f.write("\\lbl[l]{170.2,94.3;\\textcolor{black}{\\small{"+str(sale.concept[3])+"}}}\n")
+                    f.write("\\lbl[l]{170.2,232;\\textcolor{black}{\\small{"+str(sale.ten)+"}}}\n")
+                    f.write("\\lbl[l]{170.2,94.3;\\textcolor{black}{\\small{"+str(sale.ten)+"}}}\n")
 
             if sale.concept[4]:
                 total_excempt += int(sale.concept[4])
                 if int(sale.concept[4]) > 0:
                     #exentas
-                    f.write("\\lbl[l]{140.2,232;\\textcolor{black}{\\small{"+str(sale.concept[4])+"}}}\n")
-                    f.write("\\lbl[l]{140.2,94.3;\\textcolor{black}{\\small{"+str(sale.concept[4])+"}}}\n")
+                    f.write("\\lbl[l]{140.2,232;\\textcolor{black}{\\small{"+str(sale.excempt)+"}}}\n")
+                    f.write("\\lbl[l]{140.2,94.3;\\textcolor{black}{\\small{"+str(sale.excempt) +"}}}\n")
 
         #exentas subtotales
         if total_excempt > 0:
@@ -134,20 +137,38 @@ def print_invoice(filename, invoice):
         f.write("\\lbl[l]{77,37.7;\\textcolor{black}{\\small{"+ str(round(total_ten * 0.1)) + "}}}\n")
         f.write("\\lbl[l]{136,37.7;\\textcolor{black}{\\small{"+ str(round((total_five * 0.05) +(total_ten * 0.1)))+"}}}\n")
 
-def print_trailer(filename):
-    with open(filename, 'a') as f:
 
-        f.write("\\end{lpic}\n")
-        f.write("\\end{document}\n")
+    f.write("\\end{lpic}\n")
+    f.write("\\end{document}\n")
     #complie the file and open to show it.
 
-#input data.
 
-#verify data
+#verify data.
+def verify(invoice):
+    for sale in invoice.sales:
+        if price*quantity < five + ten + excempt: 
+            ERROR.
+
+        new_sale.price = input('Unit price: ')
+        #new_sale.five = input('Taxed 5%: ') 
+        new_sale.five = 0 #this wil usually be 0, so fix it for now.
+        new_sale.ten = input('Taxed 10%: ')
+        new_sale.excempt = input('Excempt: ')
+
+
+
+
+#print data
+def produce_invoice(destination, invoice):
+    filename = destination + invoice.date.replace(' ','_') + ".tex"
+    print_header(filename)
+    #finish the file and compile it.
+    print_invoice(todays_date, new_invoice)
+    print_trailer(todays_date)
+
+
+#input data
 if __name__ == "__main__":
-
-    todays_date = './invoices/' + format_date(date.today(), locale='es', format='long').replace(' ','_') + ".tex"
-    print_header(todays_date)
 
     new_invoice = invoice()
 
@@ -162,24 +183,20 @@ if __name__ == "__main__":
     #process sales
     while(True):
         new_sale = sales()
+        new_sale.quantity = 1 #this will be usually 1. So fix it for now.
+        new_sale.concept = input('Concept: ')
+        new_sale.price = input('Unit price: ')
+        #new_sale.five = input('Taxed 5%: ') 
+        new_sale.five = 0 #this wil usually be 0, so fix it for now.
+        new_sale.ten = input('Taxed 10%: ')
+        new_sale.excempt = input('Excempt: ')
 
-        concept = input('Concept: ')
-        price = input('Unit price: ')
-        five = input('Taxed 5%: ')
-        ten = input('Taxed 10%: ')
-        excempt = input('Excempt: ')
-
-        new_sale.add_concept((concept, price, five, ten, excempt))
         new_invoice.add_sale(new_sale)
         
-        if new_invoice.number_of_sales() > 10:
-            print('Maximum number. Please print another invoice.')
-            break
-
         cont = input('Add another entry?: ')
         if cont.upper() == 'N':
-            break
+            verify('./invoices/', invoice)
+            print_invoice('./invoices/', invoice)
+            exit()
 
-    #finish the file and compile it.
-    print_invoice(todays_date, new_invoice)
-    print_trailer(todays_date)
+    
