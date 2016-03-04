@@ -202,9 +202,9 @@ if __name__ == "__main__":
             new_sale.concept = "Servicios de docencia"
 
 
-        new_sale.price = input('Unit price: (18.000.000)')
+        new_sale.price = input('Unit price: (0.000.000)')
         if new_sale.price == "":
-            new_sale.price = "18000000"
+            new_sale.price = "0000000"
 
         #new_sale.five = input('Taxed 5%: ') 
         new_sale.five = '0' #this wil usually be 0, so fix it for now.
@@ -215,9 +215,9 @@ if __name__ == "__main__":
         if new_sale.ten == "":
             new_sale.ten = '0'
 
-        new_sale.excempt = input('Excempt: (18.000.000)')
+        new_sale.excempt = input('Excempt: (0.000.000)')
         if new_sale.excempt == "":
-            new_sale.excempt = '18000000'
+            new_sale.excempt = '0000000'
 
         new_invoice.add_sale(new_sale)
 
